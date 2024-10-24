@@ -1,0 +1,10 @@
+# From ubuntu
+close=['<Super>q']
+maximize=['<Super>Up']
+minimize=['<Super>comma']
+switch-to-workspace-left=['<Primary><Super>Left']
+switch-to-workspace-right=['<Primary><Super>Right']
+toggle-maximized=['<Super>m']
+unmaximize=['<Super>Down']
+
+
