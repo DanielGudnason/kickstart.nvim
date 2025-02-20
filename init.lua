@@ -438,7 +438,42 @@ require('lazy').setup({
       end, { desc = '[S]earch [N]eovim files' })
     end,
   },
-
+  {
+    'nvim-java/nvim-java',
+    dependencies = {
+      {
+        'neovim/nvim-lspconfig',
+        config = true,
+        opts = {
+          servers = {
+            jdtls = {},
+          },
+          setup = {
+            jdtls = function()
+              -- Your nvim-java configuration goes here
+              require('java').setup {
+                'settings.gradle',
+                'settings.gradle.kts',
+                'pom.xml',
+                'build.gradle',
+                'mvnw',
+                'gradlew',
+                'build.gradle',
+                'build.gradle.kts',
+              }
+            end,
+          },
+        },
+      },
+    },
+    keys = {
+      {
+        '<leader>jb',
+        '<cmd>JavaBuildWorkspace<cr>',
+        desc = 'Build java workspace',
+      },
+    },
+  },
   -- LSP Plugins
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
@@ -617,7 +652,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
 
         lua_ls = {
@@ -634,6 +669,7 @@ require('lazy').setup({
             },
           },
         },
+        terraformls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -649,6 +685,9 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'sqlfluff',
+        'eslint',
+        'terraformls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -718,11 +757,13 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'black' },
+        sql = { 'sqlfluff' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'eslint' },
       },
     },
   },
@@ -907,7 +948,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'hcl', 'terraform' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
